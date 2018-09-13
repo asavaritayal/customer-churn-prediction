@@ -1,7 +1,13 @@
 azure-functions==1.0.0a4
 azure-functions-worker==1.0.0a4
+distlib==0.2.8.dev0
 grpcio==1.14.2
 grpcio-tools==1.14.2
+numpy==1.15.1
+pandas==0.23.4
 protobuf==3.6.1
-six==1.11.0
+python-dateutil==2.7.3
+pytz==2018.5
 scikit-learn==0.18.1
+scipy==1.1.0
+six==1.11.0
