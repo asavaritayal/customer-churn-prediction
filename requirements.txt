@@ -1,6 +1,5 @@
 azure-functions==1.0.0a4
 azure-functions-worker==1.0.0a4
-distlib==0.2.8.dev0
 grpcio==1.14.2
 grpcio-tools==1.14.2
 numpy==1.15.1

@@ -1,28 +1,39 @@
 import logging
 import azure.functions as func
-from sklearn.externals import joblib
 import json
 import pandas
-from io import StringIO
 
 def main(myblob):
     
     init()
-    data = pandas.read_csv(StringIO(myblob.read().decode("utf-8")))
-    input = pandas.DataFrame(data, columns=['age' , 'annualincome' , 'calldroprate' , 'callfailurerate' , 'callingnum' , 'customerid' , 'customersuspended' , 'education' , 'gender' , 'homeowner' , 'maritalstatus' , 'monthlybilledamount' , 'noadditionallines' , 'numberofcomplaints' , 'numberofmonthunpaid' , 'numdayscontractequipmentplanexpiring' , 'occupation' , 'penaltytoswitch' , 'state' , 'totalminsusedinlastmonth' , 'unpaidbalance' , 'usesinternetservice' , 'usesvoiceservice' , 'percentagecalloutsidenetwork' , 'totalcallduration' , 'avgcallduration' , 'churn' , 'year' , 'month'])
-    
-    prediction = run(input)
-    logging.info(prediction)
+    formatted_data = prep(myblob)
+    prediction = predict(formatted_data)
+
+    if(prediction == "1.0"):
+        logging.info("Customer is likely to churn")
+    else:
+        logging.info("Customer is happy :)")
 
 
 def init():
     
-    # load the model file
+    from sklearn.externals import joblib
     global model
+
     model = joblib.load('Predict/model.pkl')
 
 
-def run(input_df):
+def prep(raw_data):
+
+    from io import StringIO
+    data = pandas.read_csv(StringIO(raw_data.read().decode("utf-8")))
+    data_frame = pandas.DataFrame(data, columns=['age' , 'annualincome' , 'calldroprate' , 'callfailurerate' , 'callingnum' , 'customerid' , 'customersuspended' , 'education' , 'gender' , 'homeowner' , 'maritalstatus' , 'monthlybilledamount' , 'noadditionallines' , 'numberofcomplaints' , 'numberofmonthunpaid' , 'numdayscontractequipmentplanexpiring' , 'occupation' , 'penaltytoswitch' , 'state' , 'totalminsusedinlastmonth' , 'unpaidbalance' , 'usesinternetservice' , 'usesvoiceservice' , 'percentagecalloutsidenetwork' , 'totalcallduration' , 'avgcallduration' , 'churn' , 'year' , 'month'])
+    
+    return data_frame
+
+
+
+def predict(input_df):
     input_df_encoded = input_df
 
     input_df_encoded = input_df_encoded.drop('year', 1)
