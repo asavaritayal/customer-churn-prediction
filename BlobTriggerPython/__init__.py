@@ -1,7 +1,5 @@
 import logging
 import azure.functions as func
-import json
-import pandas
 
 def main(myblob):
     
@@ -26,6 +24,8 @@ def init():
 def prep(raw_data):
 
     from io import StringIO
+    import pandas
+
     data = pandas.read_csv(StringIO(raw_data.read().decode("utf-8")))
     data_frame = pandas.DataFrame(data, columns=['age' , 'annualincome' , 'calldroprate' , 'callfailurerate' , 'callingnum' , 'customerid' , 'customersuspended' , 'education' , 'gender' , 'homeowner' , 'maritalstatus' , 'monthlybilledamount' , 'noadditionallines' , 'numberofcomplaints' , 'numberofmonthunpaid' , 'numdayscontractequipmentplanexpiring' , 'occupation' , 'penaltytoswitch' , 'state' , 'totalminsusedinlastmonth' , 'unpaidbalance' , 'usesinternetservice' , 'usesvoiceservice' , 'percentagecalloutsidenetwork' , 'totalcallduration' , 'avgcallduration' , 'churn' , 'year' , 'month'])
     
@@ -34,6 +34,10 @@ def prep(raw_data):
 
 
 def predict(input_df):
+
+    import json
+    import pandas
+
     input_df_encoded = input_df
 
     input_df_encoded = input_df_encoded.drop('year', 1)
